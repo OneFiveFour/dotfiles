@@ -1,0 +1,5 @@
+brew install chezmoi (Mac) bzw. pacman -S chezmoi (CachyOS).
+Auf dem Mac: chezmoi init, dann chezmoi add für die beiden Configs.
+Ghostty-Config zum Template machen (chezmoi chattr +template ...) und die macos-*-Zeilen in {{ if eq .chezmoi.os "darwin" }} kapseln.
+chezmoi cd, Git-Repo anlegen, zu GitHub pushen.
+Auf CachyOS: chezmoi init --apply <dein-repo-url>.
