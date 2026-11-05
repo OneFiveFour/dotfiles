@@ -1,0 +1,39 @@
+# Ghostty configuration — managed by chezmoi
+# Shared across macOS and Linux. OS-specific blocks are rendered per machine.
+
+theme = "light:Catppuccin Frappe,dark:Catppuccin Mocha"
+
+{{- if eq .chezmoi.os "darwin" }}
+font-family = "Terminus Nerd Font"
+{{- else }}
+font-family = "Terminess Nerd Font"
+{{- end }}
+
+font-size = 13
+
+window-padding-x = 20
+
+window-padding-y = 10
+
+window-decoration = false
+
+cursor-style = block
+
+adjust-cell-height = 25%
+
+mouse-scroll-multiplier = 2
+
+copy-on-select = clipboard
+
+window-padding-balance = true
+
+background-opacity = 0.8
+
+background-blur = 90
+
+{{- if eq .chezmoi.os "darwin" }}
+
+# --- macOS only ---
+window-colorspace = "display-p3"
+macos-titlebar-style = transparent
+{{- end }}
