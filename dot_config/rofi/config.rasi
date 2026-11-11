@@ -1,0 +1,11 @@
+/* Rofi 2.1: Anwendungssuche. Optik vorerst im mitgelieferten Standard. */
+configuration {
+    /* Installierte Anwendungen aus ihren .desktop-Dateien suchen. */
+    modes: "drun";
+    /* Terminal fuer Anwendungen mit Terminal=true. */
+    terminal: "ghostty";
+    show-icons: true;
+    display-drun: "Apps";
+    /* Nur den Anwendungsnamen, ohne zusaetzliche Beschreibung anzeigen. */
+    drun-display-format: "{name}";
+}
