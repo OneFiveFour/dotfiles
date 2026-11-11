@@ -1,0 +1,20 @@
+/* Farben passend zu Waybar; die Paketgestaltung liefert das Grundlayout. */
+:root {
+    --cc-bg: #20242c;
+    --noti-border-color: #394150;
+    --noti-bg: 32, 36, 44;
+    --noti-bg-alpha: 1;
+    --noti-bg-darker: #1a1e25;
+    --noti-bg-hover: #303846;
+    --noti-bg-focus: #303846;
+    --noti-close-bg: #394150;
+    --noti-close-bg-hover: #4a5669;
+    --text-color: #e6e9ef;
+    --text-color-disabled: #aeb8c8;
+    --bg-selected: #91b9ef;
+    --border-radius: 10px;
+    --font-size-body: 13px;
+    --font-size-summary: 14px;
+}
+* { font-family: "Noto Sans", sans-serif; }
+.control-center { border: 1px solid #394150; }

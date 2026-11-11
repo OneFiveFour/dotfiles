@@ -33,3 +33,11 @@ window#waybar {
 #tray { margin-right: 8px; }
 tooltip { background: #20242c; border: 1px solid #394150; }
 tooltip label { color: #e6e9ef; }
+
+/* Benachrichtigungsanzahl und Nicht-stoeren-Status. */
+#custom-notification { padding: 0 10px; }
+#custom-notification.notification { color: #91b9ef; }
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification,
+#custom-notification.dnd-inhibited-none,
+#custom-notification.dnd-inhibited-notification { color: #efad91; }

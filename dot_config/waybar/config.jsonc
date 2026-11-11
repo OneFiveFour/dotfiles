@@ -17,6 +17,7 @@
     "modules-right": [
         "network",
         "wireplumber",
+        "custom/notification",
         "tray"
     ],
     "hyprland/workspaces": {
@@ -50,5 +51,25 @@
     "tray": {
         "icon-size": 18,
         "spacing": 8
+    },
+    "custom/notification": {
+        "format": "{icon} {0}",
+        "format-icons": {
+            "notification": "Noti",
+            "none": "Noti",
+            "dnd-notification": "DND",
+            "dnd-none": "DND",
+            "inhibited-notification": "Pause",
+            "inhibited-none": "Pause",
+            "dnd-inhibited-notification": "DND",
+            "dnd-inhibited-none": "DND"
+        },
+        "return-type": "json",
+        "exec": "swaync-client --subscribe-waybar",
+        "restart-interval": 5,
+        "on-click": "swaync-client --toggle-panel --skip-wait",
+        "on-click-right": "swaync-client --toggle-dnd --skip-wait",
+        "escape": true,
+        "tooltip": true
     }
 }

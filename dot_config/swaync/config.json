@@ -1,0 +1,44 @@
+{
+    "$schema": "/etc/xdg/swaync/configSchema.json",
+    "ignore-gtk-theme": true,
+    "cssPriority": "user",
+    "positionX": "right",
+    "positionY": "top",
+    "notification-window-preferred-output": "DP-4",
+    "control-center-preferred-output": "DP-4",
+    "layer": "overlay",
+    "control-center-layer": "overlay",
+    "control-center-exclusive-zone": true,
+    "control-center-margin-top": 8,
+    "control-center-margin-bottom": 8,
+    "control-center-margin-right": 8,
+    "control-center-width": 420,
+    "control-center-height": 600,
+    "notification-window-width": 420,
+    "fit-to-screen": false,
+    "timeout": 8,
+    "timeout-low": 5,
+    "timeout-critical": 0,
+    "keyboard-shortcuts": true,
+    "notification-grouping": true,
+    "hide-on-action": true,
+    "text-empty": "Keine Benachrichtigungen",
+    "widgets": [
+        "title",
+        "dnd",
+        "notifications"
+    ],
+    "widget-config": {
+        "title": {
+            "text": "Benachrichtigungen",
+            "clear-all-button": true,
+            "button-text": "Alle löschen"
+        },
+        "dnd": {
+            "text": "Nicht stören"
+        },
+        "notifications": {
+            "vexpand": true
+        }
+    }
+}

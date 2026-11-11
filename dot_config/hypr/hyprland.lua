@@ -39,6 +39,8 @@ hl.config({
 -- Einmal beim Sitzungsstart; kein globaler Autostart unter GNOME.
 hl.on("hyprland.start", function ()
     hl.exec_cmd("/usr/lib/mate-polkit/polkit-mate-authentication-agent-1")
+    -- Benachrichtigungsdienst nur fuer die Hyprland-Sitzung.
+    hl.exec_cmd("swaync")
     -- Statusleiste nur beim Start dieser Hyprland-Sitzung.
     hl.exec_cmd("waybar")
 end)
@@ -47,6 +49,8 @@ end)
 hl.bind("SUPER + Return", hl.dsp.exec_cmd("ghostty"))
 -- Anwendungssuche; Rofi laeuft nur bei Bedarf.
 hl.bind("SUPER + space", hl.dsp.exec_cmd("rofi -show drun"))
+-- Benachrichtigungszentrale oeffnen oder schliessen.
+hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client --toggle-panel --skip-wait"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.window.close())
 hl.bind("SUPER + SHIFT + E", hl.dsp.exit())
 
