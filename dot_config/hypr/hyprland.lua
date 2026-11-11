@@ -39,6 +39,8 @@ hl.config({
 -- Einmal beim Sitzungsstart; kein globaler Autostart unter GNOME.
 hl.on("hyprland.start", function ()
     hl.exec_cmd("/usr/lib/mate-polkit/polkit-mate-authentication-agent-1")
+    -- Statusleiste nur beim Start dieser Hyprland-Sitzung.
+    hl.exec_cmd("waybar")
 end)
 
 -- Grundlegende Bedienung.

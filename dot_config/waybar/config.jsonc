@@ -1,0 +1,54 @@
+{
+    "output": [
+        "DP-3",
+        "DP-4"
+    ],
+    "layer": "top",
+    "position": "top",
+    "exclusive": true,
+    "height": 36,
+    "spacing": 8,
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "network",
+        "wireplumber",
+        "tray"
+    ],
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "all-outputs": false,
+        "sort-by": "name"
+    },
+    "clock": {
+        "format": "{:%d.%m.%Y  %H:%M}",
+        "tooltip-format": "{:%A, %d. %B %Y}"
+    },
+    "network": {
+        "format-ethernet": "LAN",
+        "format-wifi": "Wi-Fi {signalStrength}%",
+        "format-linked": "Netz: keine IP",
+        "format-disconnected": "Netz: offline",
+        "format-disabled": "Funk: aus",
+        "family": "ipv4_6",
+        "tooltip-format": "{ifname}\n{ipaddr}",
+        "interval": 10
+    },
+    "wireplumber": {
+        "format": "Audio {volume}%",
+        "format-muted": "Audio stumm",
+        "scroll-step": 2,
+        "max-volume": 100,
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "tooltip-format": "{node_name}"
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8
+    }
+}
