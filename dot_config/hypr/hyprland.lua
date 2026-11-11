@@ -9,6 +9,8 @@ hl.monitor({
     position = "0x0",
     scale = 1,
     transform = 1,
+    -- Workaround fuer NVIDIA/HDR-Anzeigefehler in Hyprland 0.57.
+    supports_hdr = -1,
 })
 
 hl.monitor({
