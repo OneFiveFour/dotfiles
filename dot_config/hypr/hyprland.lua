@@ -53,6 +53,8 @@ hl.bind("SUPER + Return", hl.dsp.exec_cmd("ghostty"))
 hl.bind("SUPER + space", hl.dsp.exec_cmd("rofi -show drun"))
 -- Benachrichtigungszentrale oeffnen oder schliessen.
 hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client --toggle-panel --skip-wait"))
+-- Manuell sperren, ohne Anmeldefrist und ohne Einblendanimation.
+hl.bind("SUPER + L", hl.dsp.exec_cmd("pgrep -x hyprlock > /dev/null || hyprlock --grace 0 --no-fade-in"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.window.close())
 hl.bind("SUPER + SHIFT + E", hl.dsp.exit())
 
