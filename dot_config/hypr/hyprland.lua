@@ -39,6 +39,8 @@ hl.config({
 -- Einmal beim Sitzungsstart; kein globaler Autostart unter GNOME.
 hl.on("hyprland.start", function ()
     hl.exec_cmd("/usr/lib/mate-polkit/polkit-mate-authentication-agent-1")
+    -- Automatische Sperre und Monitor-Standby in Hyprland.
+    hl.exec_cmd("hypridle")
     -- Hintergrundbilder nur fuer diese Hyprland-Sitzung.
     hl.exec_cmd("hyprpaper")
     -- Benachrichtigungsdienst nur fuer die Hyprland-Sitzung.
