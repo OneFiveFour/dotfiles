@@ -1,43 +1,51 @@
-/* Gemeinsame Gestaltung fuer beide Monitorleisten. */
+/* Grundlayout; Farben und Popup-Design können unabhängig angepasst werden. */
 * {
-    font-family: "Noto Sans", sans-serif;
-    font-size: 13px;
+    font-family: "Noto Sans", "FontAwesome", sans-serif;
+    font-size: 18px;
     border: none;
     border-radius: 0;
     min-height: 0;
+    min-width: 0;
 }
-
 window#waybar {
     background: #20242c;
     color: #e6e9ef;
-    border-bottom: 1px solid #394150;
+    border-left: 1px solid #394150;
 }
-
-#workspaces { margin-left: 8px; }
-#workspaces button {
-    color: #aeb8c8;
-    background: transparent;
-    padding: 0 12px;
-    margin: 4px 2px;
-    border-radius: 5px;
-    box-shadow: none;
-    text-shadow: none;
+.modules-left { margin-top: 12px; }
+.modules-right { margin-bottom: 12px; }
+#custom-power, #bluetooth, #custom-notification, #wireplumber, #custom-apps {
+    padding: 10px 0;
+    margin: 0 6px;
+    border-radius: 6px;
 }
-#workspaces button:hover { background: #303846; }
-#workspaces button.active { color: #20242c; background: #91b9ef; }
-#workspaces button.urgent { color: #20242c; background: #efad91; }
-
-#clock, #network, #wireplumber, #tray { padding: 0 10px; }
-#clock { font-weight: 600; }
-#network.disconnected, #network.disabled, #wireplumber.muted { color: #efad91; }
-#tray { margin-right: 8px; }
+#custom-power:hover, #bluetooth:hover, #custom-notification:hover,
+#wireplumber:hover, #custom-apps:hover, #custom-clock:hover { background: #303846; }
+#custom-clock { font-size: 12px; font-weight: 600; padding: 8px 2px; }
+#custom-notification.notification, #bluetooth.connected { color: #91b9ef; }
+#bluetooth.off, #bluetooth.disabled, #wireplumber.muted { color: #aeb8c8; }
+#custom-notification.dnd-none, #custom-notification.dnd-notification { color: #efad91; }
 tooltip { background: #20242c; border: 1px solid #394150; }
-tooltip label { color: #e6e9ef; }
+tooltip label { color: #e6e9ef; font-size: 13px; }
 
-/* Benachrichtigungsanzahl und Nicht-stoeren-Status. */
-#custom-notification { padding: 0 10px; }
-#custom-notification.notification { color: #91b9ef; }
-#custom-notification.dnd-none,
-#custom-notification.dnd-notification,
-#custom-notification.dnd-inhibited-none,
-#custom-notification.dnd-inhibited-notification { color: #efad91; }
+/* Gleiche Inhaltsbreite fuer alle Elemente: 76px minus Rand und Seitenabstand. */
+#custom-power, #bluetooth, #custom-notification, #wireplumber, #custom-apps {
+    min-width: 63px;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding-left: 0;
+    padding-right: 0;
+}
+#custom-power label, #custom-notification label, #custom-apps label {
+    min-width: 63px;
+    padding-left: 0;
+    padding-right: 0;
+}
+#custom-clock {
+    min-width: 63px;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding-left: 0;
+    padding-right: 0;
+}
+#custom-clock label { min-width: 63px; }

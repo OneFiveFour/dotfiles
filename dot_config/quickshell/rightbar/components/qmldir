@@ -1,0 +1,9 @@
+ActionButton 1.0 ActionButton.qml
+BarButton 1.0 BarButton.qml
+BarIsland 1.0 BarIsland.qml
+BatteryIndicator 1.0 BatteryIndicator.qml
+IconButton 1.0 IconButton.qml
+LoadingSpinner 1.0 LoadingSpinner.qml
+StyledSlider 1.0 StyledSlider.qml
+StyledSwitch 1.0 StyledSwitch.qml
+HoverPopupController 1.0 HoverPopupController.qml

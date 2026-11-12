@@ -1,0 +1,5 @@
+Material Icons by Google. Apache License 2.0.
+Source: https://github.com/google/material-design-icons
+License: https://www.apache.org/licenses/LICENSE-2.0
+
+Eigene Vektorsymbole dieser Konfiguration: battery-1.svg, battery-2.svg, battery-3.svg.

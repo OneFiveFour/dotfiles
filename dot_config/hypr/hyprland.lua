@@ -1,5 +1,5 @@
 -- Minimale Grundkonfiguration fuer Hyprland 0.57.2.
--- SUPER bezeichnet die Windows-/Super-Taste.
+-- HYPER entspricht CTRL + SUPER + ALT (auf Caps Lock).
 
 -- Monitoranordnung wie unter GNOME: Portrait links, Landscape rechts.
 -- Positionen beziehen sich auf die gedrehte Groesse bei 100 % Skalierung.
@@ -33,9 +33,27 @@ hl.config({
         gaps_out = 10,
         border_size = 2,
     },
+    decoration = {
+        blur = {
+            enabled = true,
+            size = 6,
+            passes = 2,
+        },
+    },
+    binds = {
+        window_direction_monitor_fallback = true,
+    },
     dwindle = {
         preserve_split = true,
     },
+})
+
+-- Glas-Hintergrund fuer Inseln, Popup-Karten und Benachrichtigungen.
+hl.layer_rule({
+    name = "rightbar-glass-blur",
+    match = { namespace = "^rightbar(-popup|-toast)?$" },
+    blur = true,
+    ignore_alpha = 0.01,
 })
 
 -- Einmal beim Sitzungsstart; kein globaler Autostart unter GNOME.
@@ -45,24 +63,30 @@ hl.on("hyprland.start", function ()
     hl.exec_cmd("hypridle")
     -- Hintergrundbilder nur fuer diese Hyprland-Sitzung.
     hl.exec_cmd("hyprpaper")
-    -- Benachrichtigungsdienst nur fuer die Hyprland-Sitzung.
-    hl.exec_cmd("swaync")
-    -- Statusleiste nur beim Start dieser Hyprland-Sitzung.
-    hl.exec_cmd("waybar")
+    -- Rechte Leiste und einheitliche Popups fuer diese Hyprland-Sitzung.
+    hl.exec_cmd("quickshell -d -n -c rightbar")
 end)
 
 -- Grundlegende Bedienung.
-hl.bind("SUPER + Return", hl.dsp.exec_cmd("ghostty"))
--- Anwendungssuche; Rofi laeuft nur bei Bedarf.
-hl.bind("SUPER + space", hl.dsp.exec_cmd("rofi -show drun"))
+hl.bind("CTRL + SUPER + ALT + Return", hl.dsp.exec_cmd("ghostty"))
+-- Anwendungssuche beim Loslassen einer einzeln gedrueckten Super-Taste.
+hl.bind("Super_L", hl.dsp.exec_cmd("rofi -show drun"), { release = true })
+hl.bind("Super_R", hl.dsp.exec_cmd("rofi -show drun"), { release = true })
 -- Benachrichtigungszentrale oeffnen oder schliessen.
-hl.bind("SUPER + N", hl.dsp.exec_cmd("swaync-client --toggle-panel --skip-wait"))
+hl.bind("CTRL + SUPER + ALT + N", hl.dsp.exec_cmd("quickshell ipc -c rightbar call panel toggle notifications"))
 -- Manuell sperren, ohne Anmeldefrist und ohne Einblendanimation.
-hl.bind("SUPER + L", hl.dsp.exec_cmd("pgrep -x hyprlock > /dev/null || hyprlock --grace 0 --no-fade-in"))
-hl.bind("SUPER + SHIFT + Q", hl.dsp.window.close())
-hl.bind("SUPER + SHIFT + E", hl.dsp.exit())
+hl.bind("CTRL + SUPER + ALT + L", hl.dsp.exec_cmd("pgrep -x hyprlock > /dev/null || hyprlock --grace 0 --no-fade-in"))
+hl.bind("CTRL + SUPER + ALT + SHIFT + Q", hl.dsp.window.close())
+hl.bind("CTRL + SUPER + ALT + SHIFT + E", hl.dsp.exit())
 
-hl.bind("SUPER + left", hl.dsp.focus({ direction = "left" }))
-hl.bind("SUPER + right", hl.dsp.focus({ direction = "right" }))
-hl.bind("SUPER + up", hl.dsp.focus({ direction = "up" }))
-hl.bind("SUPER + down", hl.dsp.focus({ direction = "down" }))
+-- Aktives Fenster verschieben; am Monitorrand zum Nachbarmonitor wechseln.
+hl.bind("CTRL + SUPER + ALT + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
+hl.bind("CTRL + SUPER + ALT + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
+hl.bind("CTRL + SUPER + ALT + SHIFT + up", hl.dsp.window.move({ direction = "up" }))
+hl.bind("CTRL + SUPER + ALT + SHIFT + down", hl.dsp.window.move({ direction = "down" }))
+
+-- Fokus in Pfeilrichtung wechseln, auch zwischen Monitoren.
+hl.bind("CTRL + SUPER + ALT + left", hl.dsp.focus({ direction = "left" }))
+hl.bind("CTRL + SUPER + ALT + right", hl.dsp.focus({ direction = "right" }))
+hl.bind("CTRL + SUPER + ALT + up", hl.dsp.focus({ direction = "up" }))
+hl.bind("CTRL + SUPER + ALT + down", hl.dsp.focus({ direction = "down" }))

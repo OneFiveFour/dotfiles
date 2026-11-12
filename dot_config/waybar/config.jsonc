@@ -1,68 +1,51 @@
 {
-    "output": [
-        "DP-3",
-        "DP-4"
-    ],
+    "output": "DP-4",
     "layer": "top",
-    "position": "top",
+    "position": "right",
     "exclusive": true,
-    "height": 36,
+    "width": 76,
     "spacing": 8,
     "modules-left": [
-        "hyprland/workspaces"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [
-        "network",
-        "wireplumber",
+        "custom/power",
+        "bluetooth",
         "custom/notification",
-        "tray"
+        "wireplumber"
     ],
-    "hyprland/workspaces": {
-        "format": "{name}",
-        "all-outputs": false,
-        "sort-by": "name"
+    "modules-center": [],
+    "modules-right": [
+        "custom/apps",
+        "custom/clock"
+    ],
+    "custom/power": {
+        "format": "",
+        "tooltip-format": "Ausschalten / Abmelden",
+        "on-click": "/home/florian/.config/waybar/panel.py power",
+        "align": 0.5,
+        "justify": "center",
+        "icon-spacing": 0
     },
-    "clock": {
-        "format": "{:%d.%m.%Y  %H:%M}",
-        "tooltip-format": "{:%A, %d. %B %Y}"
-    },
-    "network": {
-        "format-ethernet": "LAN",
-        "format-wifi": "Wi-Fi {signalStrength}%",
-        "format-linked": "Netz: keine IP",
-        "format-disconnected": "Netz: offline",
-        "format-disabled": "Funk: aus",
-        "family": "ipv4_6",
-        "tooltip-format": "{ifname}\n{ipaddr}",
-        "interval": 10
-    },
-    "wireplumber": {
-        "format": "Audio {volume}%",
-        "format-muted": "Audio stumm",
-        "scroll-step": 2,
-        "max-volume": 100,
-        "on-click": "pavucontrol",
-        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "tooltip-format": "{node_name}"
-    },
-    "tray": {
-        "icon-size": 18,
-        "spacing": 8
+    "bluetooth": {
+        "format": "",
+        "format-disabled": "",
+        "format-off": "",
+        "format-connected": "",
+        "tooltip-format": "Bluetooth: {status}\nGeräteübersicht öffnen",
+        "tooltip-format-connected": "Bluetooth: {num_connections} verbunden\n{device_enumerate}",
+        "on-click": "/home/florian/.config/waybar/panel.py bluetooth",
+        "align": 0.5,
+        "justify": "center"
     },
     "custom/notification": {
-        "format": "{icon} {0}",
+        "format": "{icon}",
         "format-icons": {
-            "notification": "Noti",
-            "none": "Noti",
-            "dnd-notification": "DND",
-            "dnd-none": "DND",
-            "inhibited-notification": "Pause",
-            "inhibited-none": "Pause",
-            "dnd-inhibited-notification": "DND",
-            "dnd-inhibited-none": "DND"
+            "notification": "",
+            "none": "",
+            "dnd-notification": "",
+            "dnd-none": "",
+            "inhibited-notification": "",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "",
+            "dnd-inhibited-none": ""
         },
         "return-type": "json",
         "exec": "swaync-client --subscribe-waybar",
@@ -70,6 +53,37 @@
         "on-click": "swaync-client --toggle-panel --skip-wait",
         "on-click-right": "swaync-client --toggle-dnd --skip-wait",
         "escape": true,
-        "tooltip": true
+        "align": 0.5,
+        "justify": "center",
+        "icon-spacing": 0
+    },
+    "wireplumber": {
+        "format": "",
+        "format-muted": "",
+        "scroll-step": 2,
+        "max-volume": 100,
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "tooltip-format": "Lautstärke: {volume}%\nKlick: Sound-Einstellungen\nScrollen: Lautstärke · Rechtsklick: stumm",
+        "align": 0.5,
+        "justify": "center"
+    },
+    "custom/apps": {
+        "exec": "/home/florian/.config/waybar/panel.py apps-status",
+        "return-type": "json",
+        "interval": 10,
+        "on-click": "/home/florian/.config/waybar/panel.py apps",
+        "align": 0.5,
+        "justify": "center",
+        "icon-spacing": 0
+    },
+    "custom/clock": {
+        "exec": "/home/florian/.config/waybar/panel.py clock",
+        "return-type": "json",
+        "interval": 1,
+        "on-click": "/home/florian/.config/waybar/panel.py calendar",
+        "align": 0.5,
+        "justify": "center",
+        "icon-spacing": 0
     }
 }
