@@ -71,8 +71,8 @@ Rectangle {
         IconButton {
             visible: !card.device.connected
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 32
-            Layout.preferredHeight: 32
+            Layout.preferredWidth: 40
+            Layout.preferredHeight: 40
             iconName: card.device.pairing ? "close" : "connect"
             description: card.device.pairing ? "Kopplung abbrechen" : card.device.paired ? "Verbinden" : "Koppeln"
             loading: !card.device.pairing && card.device.state === BluetoothDeviceState.Connecting

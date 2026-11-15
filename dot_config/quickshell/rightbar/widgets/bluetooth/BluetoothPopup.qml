@@ -32,26 +32,6 @@ ScrollView {
         id: body
         width: view.availableWidth
         spacing: 10
-        RowLayout {
-            Layout.fillWidth: true
-            IconButton {
-                Layout.preferredWidth: 40
-                Layout.preferredHeight: 40
-                iconName: "search"
-                loading: !!view.adapter && view.adapter.discovering
-                description: view.adapter && view.adapter.discovering ? "Suche stoppen" : "Geräte suchen"
-                selected: !!view.adapter && view.adapter.discovering
-                enabled: !!view.adapter && view.adapter.enabled
-                opacity: enabled ? 1 : 0.4
-                onClicked: {
-                    view.adapter.discovering = !view.adapter.discovering;
-                    view.scanOwned = view.adapter.discovering;
-                }
-            }
-            Item {
-                Layout.fillWidth: true
-            }
-        }
         Text {
             visible: !view.adapter
             Layout.fillWidth: true
@@ -133,6 +113,26 @@ ScrollView {
                 Layout.fillWidth: true
                 device: modelData
                 batteryReports: view.shellRoot.batteryReports
+            }
+        }
+        IconButton {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 72
+            iconName: "plus"
+            loading: !!view.adapter && view.adapter.discovering
+            description: loading ? "Suche stoppen" : "Geräte suchen"
+            selected: loading
+            enabled: !!view.adapter && view.adapter.enabled
+            opacity: enabled ? 1 : 0.4
+            background: Rectangle {
+                radius: 12
+                color: parent.down || parent.hovered ? Theme.hover : Theme.surface
+                border.width: parent.activeFocus ? 1 : 0
+                border.color: Theme.accent
+            }
+            onClicked: {
+                view.adapter.discovering = !view.adapter.discovering;
+                view.scanOwned = view.adapter.discovering;
             }
         }
     }

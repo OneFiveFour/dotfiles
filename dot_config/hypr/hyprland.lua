@@ -68,14 +68,17 @@ hl.on("hyprland.start", function ()
 end)
 
 -- Grundlegende Bedienung.
-hl.bind("CTRL + SUPER + ALT + Return", hl.dsp.exec_cmd("ghostty"))
--- Anwendungssuche beim Loslassen einer einzeln gedrueckten Super-Taste.
-hl.bind("Super_L", hl.dsp.exec_cmd("rofi -show drun"), { release = true })
-hl.bind("Super_R", hl.dsp.exec_cmd("rofi -show drun"), { release = true })
+hl.bind("SUPER + Return", hl.dsp.exec_cmd("ghostty"))
+-- Browser und Dateiverwaltung.
+hl.bind("SUPER + B", hl.dsp.exec_cmd("flatpak run app.zen_browser.zen"))
+hl.bind("SUPER + E", hl.dsp.exec_cmd("nautilus --new-window"))
+-- Anwendungssuche mit einzeln gedrueckter Super-Taste oeffnen/schliessen.
+hl.bind("Super_L", hl.dsp.exec_cmd("pkill -x rofi || rofi -show drun"), { release = true })
+hl.bind("Super_R", hl.dsp.exec_cmd("pkill -x rofi || rofi -show drun"), { release = true })
 -- Benachrichtigungszentrale oeffnen oder schliessen.
-hl.bind("CTRL + SUPER + ALT + N", hl.dsp.exec_cmd("quickshell ipc -c rightbar call panel toggle notifications"))
+hl.bind("SUPER + N", hl.dsp.exec_cmd("quickshell ipc -c rightbar call panel toggle notifications"))
 -- Manuell sperren, ohne Anmeldefrist und ohne Einblendanimation.
-hl.bind("CTRL + SUPER + ALT + L", hl.dsp.exec_cmd("pgrep -x hyprlock > /dev/null || hyprlock --grace 0 --no-fade-in"))
+hl.bind("SUPER + L", hl.dsp.exec_cmd("pgrep -x hyprlock > /dev/null || hyprlock --grace 0 --no-fade-in"))
 hl.bind("CTRL + SUPER + ALT + SHIFT + Q", hl.dsp.window.close())
 hl.bind("CTRL + SUPER + ALT + SHIFT + E", hl.dsp.exit())
 

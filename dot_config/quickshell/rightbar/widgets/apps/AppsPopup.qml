@@ -17,8 +17,9 @@ ScrollView {
         width: view.availableWidth
         spacing: 10
         Text {
+            visible: view.pending !== null
             Layout.fillWidth: true
-            text: view.pending ? view.pending.name + " wirklich " + (view.force ? "zwangsweise beenden?" : "beenden?") : "Desktop-Apps mit und ohne offenes Fenster"
+            text: view.pending ? view.pending.name + " wirklich " + (view.force ? "zwangsweise beenden?" : "beenden?") : ""
             wrapMode: Text.Wrap
             color: Theme.muted
             font.family: Theme.font
@@ -66,42 +67,56 @@ ScrollView {
             Rectangle {
                 required property var modelData
                 Layout.fillWidth: true
-                implicitHeight: appColumn.implicitHeight + 24
+                implicitHeight: appRow.implicitHeight + 24
                 radius: 12
                 color: Theme.surface
-                ColumnLayout {
-                    id: appColumn
+                RowLayout {
+                    id: appRow
                     x: 12
                     y: 12
                     width: parent.width - 24
-                    spacing: 7
-                    Text {
+                    spacing: 10
+                    ColumnLayout {
                         Layout.fillWidth: true
-                        text: modelData.name
-                        color: Theme.text
-                        font.family: Theme.font
-                        font.pixelSize: 13
-                        font.bold: true
-                        wrapMode: Text.Wrap
-                        textFormat: Text.PlainText
-                    }
-                    Text {
-                        text: modelData.state + " · PID " + modelData.pid
-                        color: Theme.muted
-                        font.family: Theme.font
-                        font.pixelSize: 11
+                        spacing: 7
+                        Text {
+                            Layout.fillWidth: true
+                            text: modelData.name
+                            color: Theme.text
+                            font.family: Theme.font
+                            font.pixelSize: 13
+                            font.bold: true
+                            wrapMode: Text.Wrap
+                            textFormat: Text.PlainText
+                        }
+                        Text {
+                            Layout.fillWidth: true
+                            text: modelData.state + " · PID " + modelData.pid
+                            color: Theme.muted
+                            font.family: Theme.font
+                            font.pixelSize: 11
+                            wrapMode: Text.Wrap
+                            textFormat: Text.PlainText
+                        }
                     }
                     RowLayout {
-                        ActionButton {
-                            text: "Beenden"
+                        Layout.alignment: Qt.AlignVCenter
+                        spacing: 6
+                        IconButton {
+                            Layout.preferredWidth: 40
+                            Layout.preferredHeight: 40
+                            iconName: "close"
+                            description: "Beenden"
                             onClicked: {
                                 view.pending = modelData;
                                 view.force = false;
                             }
                         }
-                        ActionButton {
-                            text: "Erzwingen"
-                            destructive: true
+                        IconButton {
+                            Layout.preferredWidth: 40
+                            Layout.preferredHeight: 40
+                            iconName: "force-stop"
+                            description: "Beenden erzwingen"
                             onClicked: {
                                 view.pending = modelData;
                                 view.force = true;

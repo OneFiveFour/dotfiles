@@ -16,27 +16,25 @@ ScrollView {
         spacing: 10
         RowLayout {
             Layout.fillWidth: true
-            ActionButton {
+            Layout.minimumHeight: Theme.buttonSize
+            Text {
                 Layout.fillWidth: true
-                text: view.shellRoot.doNotDisturb ? "Nicht stören: an" : "Nicht stören: aus"
-                selected: view.shellRoot.doNotDisturb
-                onClicked: view.shellRoot.doNotDisturb = !view.shellRoot.doNotDisturb
+                text: view.shellRoot.history.length === 0 ? "Keine Benachrichtigungen" : ""
+                color: Theme.muted
+                font.family: Theme.font
+                font.pixelSize: 13
+                wrapMode: Text.Wrap
             }
-            ActionButton {
-                text: "Leeren"
+            IconButton {
+                Layout.preferredWidth: 40
+                Layout.preferredHeight: 40
+                Layout.alignment: Qt.AlignVCenter
+                iconName: "done-all"
+                description: "Alle Benachrichtigungen leeren"
                 enabled: view.shellRoot.history.length > 0
+                opacity: enabled ? 1 : 0.4
                 onClicked: view.shellRoot.clearNotifications()
             }
-        }
-        Text {
-            visible: view.shellRoot.history.length === 0
-            Layout.fillWidth: true
-            text: "Keine Benachrichtigungen"
-            color: Theme.muted
-            font.family: Theme.font
-            font.pixelSize: 13
-            topPadding: 16
-            bottomPadding: 16
         }
         Repeater {
             model: view.shellRoot.history
@@ -72,38 +70,54 @@ ScrollView {
                             onClicked: modelData.dismiss()
                         }
                     }
-                    Text {
+                    RowLayout {
                         Layout.fillWidth: true
-                        text: modelData.summary
-                        color: Theme.text
-                        font.family: Theme.font
-                        font.pixelSize: 13
-                        font.bold: true
-                        wrapMode: Text.Wrap
-                        textFormat: Text.PlainText
-                    }
-                    Text {
-                        Layout.fillWidth: true
-                        visible: text !== ""
-                        text: modelData.body
-                        color: Theme.muted
-                        font.family: Theme.font
-                        font.pixelSize: 12
-                        wrapMode: Text.Wrap
-                        textFormat: Text.PlainText
-                    }
-                    Flow {
-                        Layout.fillWidth: true
-                        height: childrenRect.height
-                        spacing: 6
-                        Repeater {
-                            model: modelData.actions
-                            ActionButton {
-                                required property var modelData
-                                text: modelData.text
-                                onClicked: {
-                                    modelData.invoke();
-                                    view.shellRoot.closePopup();
+                        spacing: 12
+                        ColumnLayout {
+                            Layout.fillWidth: true
+                            spacing: 7
+                            Text {
+                                Layout.fillWidth: true
+                                text: modelData.summary
+                                color: Theme.text
+                                font.family: Theme.font
+                                font.pixelSize: 13
+                                font.bold: true
+                                wrapMode: Text.Wrap
+                                textFormat: Text.PlainText
+                            }
+                            Text {
+                                Layout.fillWidth: true
+                                visible: text !== ""
+                                text: modelData.body
+                                color: Theme.muted
+                                font.family: Theme.font
+                                font.pixelSize: 12
+                                wrapMode: Text.Wrap
+                                textFormat: Text.PlainText
+                            }
+                        }
+                        ColumnLayout {
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.maximumWidth: 110
+                            visible: modelData.actions.some(action => (action.text || "").trim().length > 0 || action.identifier === "default")
+                            spacing: 6
+                            Repeater {
+                                model: modelData.actions
+                                ActionButton {
+                                    required property var modelData
+                                    readonly property string actionLabel: (modelData.text || "").trim()
+                                    Layout.fillWidth: true
+                                    Layout.maximumWidth: 110
+                                    Layout.minimumHeight: 40
+                                    Layout.preferredHeight: 40
+                                    Layout.maximumHeight: 40
+                                    visible: actionLabel.length > 0 || modelData.identifier === "default"
+                                    text: actionLabel || (modelData.identifier === "default" ? "Öffnen" : "")
+                                    onClicked: {
+                                        modelData.invoke();
+                                        view.shellRoot.closePopup();
+                                    }
                                 }
                             }
                         }

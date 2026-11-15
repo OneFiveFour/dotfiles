@@ -273,22 +273,31 @@ ShellRoot {
                 }
                 BarButton {
                     id: notificationButton
-                    icon: "notifications"
-                    label: root.doNotDisturb ? "Benachrichtigungen · Nicht stören" : "Benachrichtigungen"
+                    icon: root.doNotDisturb ? "notifications-off" : "notifications"
+                    label: root.doNotDisturb ? "Klick: Nicht stören ausschalten · Hover: Benachrichtigungen" : "Klick: Nicht stören einschalten · Hover: Benachrichtigungen"
                     marked: root.history.length > 0
                     selected: root.popupName === "notifications"
-                    onClicked: root.openPopup("notifications", this)
-                    onRightClicked: root.doNotDisturb = !root.doNotDisturb
+                    color: hovered ? Theme.surface : "transparent"
+                    onClicked: {
+                        root.doNotDisturb = !root.doNotDisturb;
+                        if (root.doNotDisturb)
+                            root.toast = null;
+                    }
                 }
                 BarButton {
                     id: soundButton
                     icon: root.sink && root.sink.audio && root.sink.audio.muted ? "muted" : "volume"
-                    label: root.sink && root.sink.audio ? "Lautstärke: " + Math.round(root.sink.audio.volume * 100) + "%" : "Sound"
+                    label: root.sink && root.sink.audio ? (root.sink.audio.muted ? "Klick: Ausgabe und Eingabe aktivieren" : "Klick: Ausgabe und Eingabe stummschalten") + " · Hover: Sound · Lautstärke: " + Math.round(root.sink.audio.volume * 100) + "%" : "Kein Ausgabegerät · Hover: Sound"
                     selected: root.popupName === "sound"
-                    onClicked: root.openPopup("sound", this)
-                    onRightClicked: {
-                        if (root.sink && root.sink.audio)
-                            root.sink.audio.muted = !root.sink.audio.muted;
+                    color: hovered ? Theme.surface : "transparent"
+                    onClicked: {
+                        const output = root.sink ? root.sink.audio : null;
+                        const input = root.mic ? root.mic.audio : null;
+                        const muted = output ? !output.muted : input ? !input.muted : false;
+                        if (output)
+                            output.muted = muted;
+                        if (input)
+                            input.muted = muted;
                     }
                     onScrolled: delta => root.volumeStep(delta)
                 }
@@ -356,6 +365,34 @@ ShellRoot {
         onOpenRequested: root.openPopup("bluetooth", bluetoothButton)
         onCloseRequested: root.closePopup()
     }
+    HoverPopupController {
+        active: root.popupName === "notifications"
+        buttonHovered: notificationButton.hovered
+        popupHovered: popupHover.hovered
+        onOpenRequested: root.openPopup("notifications", notificationButton)
+        onCloseRequested: root.closePopup()
+    }
+    HoverPopupController {
+        active: root.popupName === "sound"
+        buttonHovered: soundButton.hovered
+        popupHovered: popupHover.hovered
+        onOpenRequested: root.openPopup("sound", soundButton)
+        onCloseRequested: root.closePopup()
+    }
+    HoverPopupController {
+        active: root.popupName === "apps"
+        buttonHovered: appsButton.hovered
+        popupHovered: popupHover.hovered
+        onOpenRequested: root.openPopup("apps", appsButton)
+        onCloseRequested: root.closePopup()
+    }
+    HoverPopupController {
+        active: root.popupName === "calendar"
+        buttonHovered: clockMouse.containsMouse
+        popupHovered: popupHover.hovered
+        onOpenRequested: root.openPopup("calendar", clockButton)
+        onCloseRequested: root.closePopup()
+    }
     PanelWindow {
         id: popup
         screen: root.targetScreen
@@ -398,7 +435,8 @@ ShellRoot {
             }
             readonly property bool powerMenu: root.popupName === "power"
             readonly property real insetX: powerMenu ? 0 : 20
-            readonly property real insetY: powerMenu ? 8 : 20
+            // Ohne sichtbare Card die Power-Buttons direkt an der Button-Oberkante ausrichten.
+            readonly property real insetY: compactPower ? 0 : powerMenu ? 8 : 20
             readonly property bool compactPower: powerMenu && view.item && !view.item.pendingLogout && root.errorText === ""
             width: powerMenu ? Math.max(2 * Theme.buttonSize + 12, view.item ? view.item.implicitWidth : 0) : 390
             height: Math.min(popup.height - 24, Math.max(powerMenu ? 0 : 80, (view.item ? view.item.implicitHeight : 100) + 2 * insetY + (root.errorText ? errorLabel.implicitHeight + 12 : 0)))
@@ -407,8 +445,10 @@ ShellRoot {
             anchors.rightMargin: powerMenu ? 0 : 10
             y: {
                 const button = root.anchorButton;
-                const point = button ? button.mapToItem(bar.contentItem, 0, button.height / 2) : Qt.point(0, 100);
-                const desiredY = powerMenu ? point.y - Theme.buttonSize / 2 - insetY : point.y - height / 2;
+                const point = button ? button.mapToItem(bar.contentItem, 0, 0) : Qt.point(0, 100);
+                // Oben die erste Inhaltszeile, unten weiterhin die Card-Unterkante ausrichten.
+                const bottomAligned = button === appsButton || button === clockButton;
+                const desiredY = bottomAligned ? point.y + button.height - height : point.y - insetY;
                 return Math.round(Math.max(powerMenu ? 0 : 10, Math.min(popup.height - height - (powerMenu ? 0 : 10), desiredY)));
             }
             MouseArea {
