@@ -35,6 +35,7 @@ widgets/                       Einzelne Popup-Inhalte
   power/PowerPopup.qml                Sperren und Abmelden
   sound/SoundPopup.qml                Ausgabe, Mikrofon und Geräteauswahl
   notifications/NotificationsPopup.qml Benachrichtigungsverlauf
+  notifications/NotificationActions.js Gemeinsame Karten-/Toast-/Aktionsbehandlung
   apps/AppsPopup.qml                  Laufende Anwendungen
   calendar/CalendarPopup.qml          Monatskalender
 
@@ -44,6 +45,7 @@ backend/                       Python-Systemanbindung
   process_actions.py           Identitätsgeprüftes Beenden von Prozessen
   bluetooth_agent.py           PIN-Eingabe und Bluetooth-Kopplungsbestätigung
   battery_status.py            Akkustufen aus UPower
+  notification_actions.py      App-Zuordnung und Fokus/Start bei Benachrichtigungen
 
 assets/icons/                  Material-Icons und eigene dreistufige Akku-SVGs
 tests/test_battery_status.py   Akku-Grenzwerte und grobe Akkumeldungen
@@ -65,6 +67,25 @@ Hyprland startet weiterhin genau dieselbe benannte Konfiguration rightbar.
 Jeder QML-Unterordner hat eine qmldir-Datei zur Registrierung seiner Komponenten.
 
 Tests: Im Konfigurationsordner python3 -m unittest discover -s tests -v
+Klicktests: QT_QPA_PLATFORM=offscreen /usr/lib/qt6/bin/qmltestrunner -input tests/tst_notification_actions.qml
+
+BENACHRICHTIGUNGEN
+
+Karten und Toasts führen die Standardaktion (default) aus. Das Popup gibt seinen
+exklusiven Tastaturfokus vor der Aktion frei. Anschließend wird ein vorhandenes
+Fenster der zugeordneten App fokussiert. Andere Aktionsbuttons werden unverändert
+an die App weitergegeben; ein Kartenklick führt niemals ersatzweise eine beliebige
+Aktion wie Löschen aus.
+
+Ohne Standardaktion wird die App über desktop-entry, eindeutigen App-Namen oder
+App-Icon ermittelt und fokussiert bzw. gestartet. Desktop-Dateien werden über Gio
+gestartet. Mit Standardaktion wird keine zweite App-Instanz gestartet.
+Browser-Benachrichtigungen müssen ihre Website/den passenden Tab selbst über die
+Standardaktion öffnen; der Fenster-Fallback kann nur den Browser sichtbar machen.
+Nachrichtentexte werden nicht als URLs oder Befehle interpretiert. Fehlt eine
+eindeutige Zuordnung, erscheint eine Fehlermeldung im Benachrichtigungs-Popup.
+Klicks werden ohne Nachrichtentext/-betreff im Quickshell-Log protokolliert.
+
 Die Bluetooth-Suche stoppt nach 20 Sekunden oder beim Schließen des Widgets.
 Rofi, Hypridle, Hyprlock und Hyprpaper behalten ihre bisherigen Aufgaben.
 Benachrichtigungsverlauf bleibt im Speicher der laufenden Quickshell-Instanz.

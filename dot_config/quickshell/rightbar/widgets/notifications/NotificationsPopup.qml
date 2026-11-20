@@ -39,11 +39,17 @@ ScrollView {
         Repeater {
             model: view.shellRoot.history
             Rectangle {
+                id: notificationCard
                 required property var modelData
                 Layout.fillWidth: true
                 implicitHeight: notificationColumn.implicitHeight + 24
                 radius: 12
                 color: Theme.surface
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: view.shellRoot.activateNotification(notificationCard.modelData, null)
+                }
                 ColumnLayout {
                     id: notificationColumn
                     x: 12
@@ -115,8 +121,7 @@ ScrollView {
                                     visible: actionLabel.length > 0 || modelData.identifier === "default"
                                     text: actionLabel || (modelData.identifier === "default" ? "Öffnen" : "")
                                     onClicked: {
-                                        modelData.invoke();
-                                        view.shellRoot.closePopup();
+                                        view.shellRoot.activateNotification(notificationCard.modelData, modelData);
                                     }
                                 }
                             }

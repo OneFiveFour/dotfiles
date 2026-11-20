@@ -1,0 +1,62 @@
+<monitors version="2">
+  <configuration>
+    <layoutmode>logical</layoutmode>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-4</connector>
+          <vendor>GSM</vendor>
+          <product>LG IPS QHD</product>
+          <serial>207NTVS4P719</serial>
+        </monitorspec>
+        <mode>
+          <width>2560</width>
+          <height>1440</height>
+          <rate>59.951</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <disabled>
+      <monitorspec>
+        <connector>DP-5</connector>
+        <vendor>GSM</vendor>
+        <product>LG IPS QHD</product>
+        <serial>207NTPC4P696</serial>
+      </monitorspec>
+    </disabled>
+  </configuration>
+  <configuration>
+    <layoutmode>logical</layoutmode>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-4</connector>
+          <vendor>GSM</vendor>
+          <product>LG IPS QHD</product>
+          <serial>207NTVS4P719</serial>
+        </monitorspec>
+        <mode>
+          <width>2560</width>
+          <height>1440</height>
+          <rate>59.951</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <disabled>
+      <monitorspec>
+        <connector>DP-3</connector>
+        <vendor>GSM</vendor>
+        <product>LG IPS QHD</product>
+        <serial>207NTPC4P696</serial>
+      </monitorspec>
+    </disabled>
+  </configuration>
+</monitors>

@@ -6,8 +6,7 @@ import QtQuick.Layouts
 Item {
     id: view
     required property var shellRoot
-    property bool pendingLogout: false
-    implicitWidth: pendingLogout ? 240 : 2 * Theme.buttonSize + 12
+    implicitWidth: 2 * Theme.buttonSize + 12
     implicitHeight: body.implicitHeight
     function buttonPositions() {
         const lock = lockAction.mapToItem(view, 0, 0);
@@ -55,36 +54,8 @@ Item {
                 Layout.maximumHeight: Theme.buttonSize
                 iconName: "logout"
                 description: "Abmelden"
-                selected: view.pendingLogout
-                onClicked: view.pendingLogout = !view.pendingLogout
-            }
-        }
-        Text {
-            visible: view.pendingLogout
-            Layout.fillWidth: true
-            text: "Von Hyprland abmelden?"
-            color: Theme.muted
-            font.family: Theme.font
-            font.pixelSize: 13
-            wrapMode: Text.Wrap
-        }
-        RowLayout {
-            visible: view.pendingLogout
-            Layout.fillWidth: true
-            spacing: 8
-            ActionButton {
-                Layout.fillWidth: true
-                text: "Abbrechen"
-                onClicked: view.pendingLogout = false
-            }
-            ActionButton {
-                Layout.fillWidth: true
-                text: "Bestätigen"
-                destructive: true
                 onClicked: {
-                    view.shellRoot.command({
-                        action: "logout"
-                    });
+                    view.shellRoot.command({ action: "logout" });
                     view.shellRoot.closePopup();
                 }
             }

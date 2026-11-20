@@ -1,11 +1,15 @@
-/* Rofi 2.1: Anwendungssuche. Optik vorerst im mitgelieferten Standard. */
+/* Anwendungssuche im Design der Quickshell-Rightbar. */
 configuration {
     /* Installierte Anwendungen aus ihren .desktop-Dateien suchen. */
     modes: "drun";
     /* Terminal fuer Anwendungen mit Terminal=true. */
     terminal: "ghostty";
     show-icons: true;
-    display-drun: "Apps";
+    display-drun: "";
+    /* Hauptmonitor: rechter Querformatmonitor. */
+    monitor: "DP-4";
     /* Nur den Anwendungsnamen, ohne zusaetzliche Beschreibung anzeigen. */
     drun-display-format: "{name}";
 }
+
+@theme "rightbar"

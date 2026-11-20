@@ -9,6 +9,7 @@ from applications import apps
 from battery_status import read_reports
 from bluetooth_agent import BluetoothAgent
 from process_actions import terminate_app
+from notification_actions import open_notification
 
 
 def emit(kind, **values):
@@ -48,6 +49,15 @@ class Backend:
             subprocess.Popen(['hyprctl', 'dispatch', 'hl.dsp.exit()'])
         elif action == 'pair-response':
             self.bluetooth.respond(data)
+        elif action == 'open-notification':
+            # Let the app process its native action before raising its window.
+            def activate():
+                try:
+                    open_notification(data.get('source', {}), bool(data.get('launch')))
+                except Exception as error:
+                    emit('notification-error', text=str(error))
+                return False
+            GLib.timeout_add(300, activate)
 
     def receive(self, channel, condition):
         if condition & GLib.IO_HUP:

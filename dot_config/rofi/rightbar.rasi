@@ -1,0 +1,112 @@
+/* Passend zu quickshell/rightbar/theme/Theme.qml. */
+@theme "/dev/null"
+
+* {
+    font: "Noto Sans 10";
+    text-color: #d9deed;
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 12%);
+    background: rgba(23, 27, 36, 48%);
+    surface: rgba(43, 51, 67, 38%);
+    selected: rgba(66, 75, 112, 65%);
+    muted: #9ba8c1;
+    accent: #b5bdf9;
+    danger: #f5a5af;
+    spacing: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+window {
+    location: north;
+    anchor: north;
+    y-offset: 480px;
+    width: 560px;
+    transparency: "real";
+    background-color: @background;
+    border: 1px;
+    border-radius: 18px;
+    padding: 18px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing: 12px;
+}
+
+inputbar {
+    children: [ entry ];
+    background-color: @surface;
+    border-radius: 12px;
+    padding: 14px;
+    spacing: 12px;
+}
+
+prompt {
+    text-color: @accent;
+    vertical-align: 0.5;
+}
+
+entry {
+    placeholder: "";
+    placeholder-color: @muted;
+    cursor: text;
+    vertical-align: 0.5;
+}
+
+listview {
+    columns: 1;
+    lines: 8;
+    fixed-height: false;
+    dynamic: true;
+    scrollbar: false;
+    spacing: 6px;
+}
+
+element {
+    children: [ element-icon, element-text ];
+    padding: 10px 12px;
+    spacing: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+element normal.normal, element alternate.normal,
+element normal.active, element alternate.active {
+    background-color: transparent;
+    text-color: #d9deed;
+}
+
+element selected.normal, element selected.active, element selected.urgent {
+    background-color: @selected;
+    text-color: #d9deed;
+}
+
+element normal.urgent, element alternate.urgent {
+    text-color: @danger;
+}
+
+element-icon {
+    size: 24px;
+    vertical-align: 0.5;
+    background-color: transparent;
+}
+
+element-text {
+    vertical-align: 0.5;
+    background-color: transparent;
+    text-color: inherit;
+    highlight: bold underline #b5bdf9;
+}
+
+error-message {
+    children: [ textbox ];
+}
+
+textbox {
+    padding: 12px;
+    text-color: @danger;
+    background-color: @surface;
+    border-radius: 12px;
+}

@@ -5,6 +5,7 @@ import "../widgets/power"
 import "../widgets/bluetooth"
 import "../widgets/sound"
 import "../widgets/notifications"
+import "../widgets/notifications/NotificationActions.js" as NotificationActions
 import "../widgets/apps"
 import "../widgets/calendar"
 import QtQuick
@@ -77,12 +78,39 @@ ShellRoot {
         if (buttons[name])
             openPopup(name, buttons[name]);
     }
+    // Nur explizite Bedienung startet den Hinweis, keine PipeWire-Hintergrundupdates.
+    readonly property real outputLevel: sink && sink.audio ? Math.max(0, Math.min(1, sink.audio.volume)) : 0
+    function volumeInput() {
+        if (popupName !== "sound" && sink && sink.audio)
+            volumeHintTimer.restart();
+    }
+    onPopupNameChanged: {
+        if (popupName === "sound")
+            volumeHintTimer.stop();
+    }
+    onSinkChanged: volumeHintTimer.stop()
+    Timer {
+        id: volumeHintTimer
+        interval: 1000
+    }
     function volumeStep(delta) {
-        if (sink && sink.audio)
+        if (sink && sink.audio) {
             sink.audio.volume = Math.max(0, Math.min(1, sink.audio.volume + (delta > 0 ? 0.02 : -0.02)));
+            volumeInput();
+        }
     }
     function clearNotifications() {
         history.slice().forEach(n => n.dismiss());
+    }
+    function activateNotification(notification, action) {
+        if (notification)
+            console.info("Notification activation:", notification.id, notification.appName,
+                "desktop=" + notification.desktopEntry,
+                "action=" + (action ? action.identifier : "card"));
+        NotificationActions.activate(notification, action, function() {
+            root.toast = null;
+            root.closePopup();
+        }, callback => Qt.callLater(callback), data => root.command(data));
     }
     Timer {
         interval: 1000
@@ -108,6 +136,11 @@ ShellRoot {
                         root.batteryReports = data.reports;
                     else if (data.kind === "error")
                         root.errorText = data.text;
+                    else if (data.kind === "notification-error") {
+                        if (root.popupName !== "notifications")
+                            root.openPopup("notifications", notificationButton);
+                        root.errorText = data.text;
+                    }
                     else if (data.kind === "agent-ready")
                         root.agentReady = true;
                     else if (data.kind === "pair") {
@@ -162,6 +195,28 @@ ShellRoot {
                 dnd: root.doNotDisturb,
                 error: root.errorText
             });
+        }
+        function notificationStatus(): string {
+            return JSON.stringify(root.history.map(n => ({
+                id: n.id, appName: n.appName, desktopEntry: n.desktopEntry,
+                appIcon: n.appIcon, resident: n.resident,
+                actions: n.actions.map(a => ({identifier: a.identifier, text: a.text}))
+            })));
+        }
+        function openNotification(id: int): bool {
+            const notification = root.history.find(n => n.id === id);
+            if (!notification)
+                return false;
+            root.activateNotification(notification, null);
+            return true;
+        }
+        function volumeInput(): void {
+            root.volumeInput();
+        }
+        function volumeHintStatus(): string {
+            return JSON.stringify({ active: volumeHintTimer.running, level: root.outputLevel,
+                opacity: volumeFill.opacity, fillHeight: volumeFill.height,
+                availableHeight: topIsland.height - 2, popup: root.popupName });
         }
         function batteryStatus(): string {
             return JSON.stringify(root.batteryReports);
@@ -231,6 +286,22 @@ ShellRoot {
                 y: topButtons.y - Theme.islandPadding
                 width: parent.width - 2 * Theme.islandInset
                 height: topButtons.height + 2 * Theme.islandPadding
+                // Hinter den Icons: Füllstand wächst von der Inselunterkante nach oben.
+                Rectangle {
+                    id: volumeFill
+                    x: 1
+                    y: topIsland.height - 1 - height
+                    width: topIsland.width - 2
+                    height: (topIsland.height - 2) * root.outputLevel
+                    radius: Math.min(Theme.islandRadius - 1, height / 2)
+                    // Gleicher Farbton wie im Sound-Popup, mit klarerer Deckkraft.
+                    readonly property color fillTint: root.sink && root.sink.audio && root.sink.audio.muted ? Theme.hover : Theme.selected
+                    color: Qt.rgba(fillTint.r, fillTint.g, fillTint.b, 1.0)
+                    opacity: volumeHintTimer.running && root.popupName !== "sound" ? 1 : 0
+                    visible: opacity > 0
+                    Behavior on height { NumberAnimation { duration: 80; easing.type: Easing.OutCubic } }
+                    Behavior on opacity { NumberAnimation { duration: 140; easing.type: Easing.OutCubic } }
+                }
             }
             BarIsland {
                 id: bottomIsland
@@ -596,8 +667,7 @@ ShellRoot {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    root.openPopup("notifications", notificationButton);
-                    root.toast = null;
+                    root.activateNotification(root.toast, null);
                 }
             }
         }
