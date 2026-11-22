@@ -48,6 +48,9 @@ hl.config({
 hl.workspace_rule({ workspace = "m[desc:LG Electronics LG IPS QHD 207NTVS4P719]", layout = "scrolling" })
 hl.workspace_rule({ workspace = "m[desc:LG Electronics LG IPS QHD 207NTPC4P696]", layout = "dwindle" })
 
+-- Terminal-Workspace verwendet auf beiden Monitoren das Master-Layout.
+hl.workspace_rule({ workspace = "name:T", layout = "master" })
+
 -- Aktives Fenster verschieben; am Monitorrand zum Nachbarmonitor wechseln.
 hl.bind("CTRL + SUPER + ALT + SHIFT + left", hl.dsp.window.move({ direction = "left" }))
 hl.bind("CTRL + SUPER + ALT + SHIFT + right", hl.dsp.window.move({ direction = "right" }))

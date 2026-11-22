@@ -52,10 +52,18 @@ hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd("hyprshot -m region -o /home/floria
 
 -- Vorhandene Anwendung auf ihrem aktuellen Workspace fokussieren.
 -- Bei mehreren Fenstern gewinnt das zuletzt benutzte Fenster.
--- Nur ohne vorhandenes Fenster auf dem Buchstaben-Workspace starten.
+-- Auf dem bereits aktiven Buchstaben-Workspace bleiben andere Apps unveraendert.
+-- Ausnahme T: dort bei jedem erneuten Druecken ein neues Terminal oeffnen.
+-- Sonst nur ohne vorhandenes Fenster auf dem Buchstaben-Workspace starten.
 local function bind_app_workspace(key, command, classes)
     local workspace = "name:" .. key
     hl.bind("SUPER + " .. key, function ()
+        local active_workspace = hl.get_active_workspace()
+        local on_app_workspace = active_workspace and active_workspace.name == key
+        if key == "T" and on_app_workspace then
+            hl.exec_cmd(command, { workspace = workspace })
+            return
+        end
         local target
         for _, window in ipairs(hl.get_windows()) do
             if window.mapped then
@@ -70,6 +78,9 @@ local function bind_app_workspace(key, command, classes)
             end
         end
         if target then
+            if on_app_workspace then
+                return
+            end
             hl.dispatch(hl.dsp.focus({ window = "address:" .. target.address }))
             return
         end
